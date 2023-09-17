@@ -1,7 +1,7 @@
 package com.example.tasklist.service;
 
-import com.example.tasklist.domain.MailType;
-import com.example.tasklist.domain.user.User;
+import com.example.tasklist.model.MailType;
+import com.example.tasklist.model.user.User;
 
 import java.util.Properties;
 

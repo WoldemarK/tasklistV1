@@ -1,8 +1,8 @@
 package com.example.tasklist.service.impl;
 
-import com.example.tasklist.domain.MailType;
-import com.example.tasklist.domain.task.Task;
-import com.example.tasklist.domain.user.User;
+import com.example.tasklist.model.MailType;
+import com.example.tasklist.model.task.Task;
+import com.example.tasklist.model.user.User;
 import com.example.tasklist.service.MailService;
 import com.example.tasklist.service.Reminder;
 import com.example.tasklist.service.TaskService;
@@ -23,8 +23,6 @@ public class ReminderImpl implements Reminder {
     private final UserService userService;
     private final MailService mailService;
     private final Duration duration = Duration.ofHours(1);
-
-    //    @Scheduled(cron = "0 0 * * * *")
     @Scheduled(cron = "0 * * * * *")
     @Override
     public void remindForTask() {
@@ -37,5 +35,4 @@ public class ReminderImpl implements Reminder {
             mailService.sendEmail(user, MailType.REMINDER, properties);
         });
     }
-
 }

@@ -1,2 +1,6 @@
-package com.example.tasklist.model;public class MailType {
+package com.example.tasklist.model;
+
+public enum MailType {
+    REGISTRATION,
+    REMINDER
 }

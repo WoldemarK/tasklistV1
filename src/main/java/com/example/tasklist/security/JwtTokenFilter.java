@@ -1,4 +1,4 @@
-package com.example.tasklist.web.security;
+package com.example.tasklist.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;
@@ -20,19 +20,15 @@ public class JwtTokenFilter extends GenericFilterBean {
     public void doFilter(final ServletRequest servletRequest,
                          final ServletResponse servletResponse,
                          final FilterChain filterChain) {
-        String bearerToken = ((HttpServletRequest) servletRequest)
-                .getHeader("Authorization");
+        String bearerToken = ((HttpServletRequest) servletRequest).getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             bearerToken = bearerToken.substring(7);
         }
         try {
-            if (bearerToken != null
-                    && jwtTokenProvider.validateToken(bearerToken)) {
-                Authentication authentication
-                        = jwtTokenProvider.getAuthentication(bearerToken);
+            if (bearerToken != null && jwtTokenProvider.validateToken(bearerToken)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(bearerToken);
                 if (authentication != null) {
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
         } catch (Exception ignored) {

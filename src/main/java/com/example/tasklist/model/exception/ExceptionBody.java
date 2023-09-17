@@ -1,4 +1,4 @@
-package com.example.tasklist.domain.exception;
+package com.example.tasklist.model.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,6 @@ public class ExceptionBody {
 
     private String message;
     private Map<String, String> errors;
-
     public ExceptionBody(final String message) {
         this.message = message;
     }

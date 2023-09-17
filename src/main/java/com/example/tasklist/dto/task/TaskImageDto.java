@@ -1,4 +1,4 @@
-package com.example.tasklist.web.dto.task;
+package com.example.tasklist.dto.task;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

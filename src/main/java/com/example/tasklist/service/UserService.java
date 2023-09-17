@@ -1,6 +1,5 @@
 package com.example.tasklist.service;
-
-import com.example.tasklist.domain.user.User;
+import com.example.tasklist.model.user.User;
 
 public interface UserService {
 

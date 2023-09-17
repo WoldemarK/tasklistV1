@@ -1,4 +1,4 @@
-package com.example.tasklist.web.security.expression;
+package com.example.tasklist.security.expression;
 
 import com.example.tasklist.service.UserService;
 import org.aopalliance.intercept.MethodInvocation;
@@ -9,20 +9,14 @@ import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 
-public class CustomSecurityExceptionHandler
-        extends DefaultMethodSecurityExpressionHandler {
-
+public class CustomSecurityExceptionHandler extends DefaultMethodSecurityExpressionHandler {
     private ApplicationContext applicationContext;
-    private final AuthenticationTrustResolver trustResolver
-            = new AuthenticationTrustResolverImpl();
-
+    private final AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
     @Override
     protected MethodSecurityExpressionOperations createSecurityExpressionRoot(
             final Authentication authentication,
-            final MethodInvocation invocation
-    ) {
-        CustomMethodSecurityExpressionRoot root
-                = new CustomMethodSecurityExpressionRoot(authentication);
+            final MethodInvocation invocation) {
+        CustomMethodSecurityExpressionRoot root = new CustomMethodSecurityExpressionRoot(authentication);
         root.setTrustResolver(trustResolver);
         root.setPermissionEvaluator(getPermissionEvaluator());
         root.setRoleHierarchy(getRoleHierarchy());
@@ -31,9 +25,7 @@ public class CustomSecurityExceptionHandler
     }
 
     @Override
-    public void setApplicationContext(
-            final ApplicationContext applicationContext
-    ) {
+    public void setApplicationContext(final ApplicationContext applicationContext) {
         super.setApplicationContext(applicationContext);
         this.applicationContext = applicationContext;
     }

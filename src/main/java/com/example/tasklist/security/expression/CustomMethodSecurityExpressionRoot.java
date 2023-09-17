@@ -1,8 +1,8 @@
-package com.example.tasklist.web.security.expression;
+package com.example.tasklist.security.expression;
 
-import com.example.tasklist.domain.user.Role;
+import com.example.tasklist.model.user.Role;
+import com.example.tasklist.security.JwtEntity;
 import com.example.tasklist.service.UserService;
-import com.example.tasklist.web.security.JwtEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @Setter
 @Getter
-public class CustomMethodSecurityExpressionRoot
-        extends SecurityExpressionRoot
-        implements MethodSecurityExpressionOperations {
+public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
     private Object filterObject;
     private Object returnObject;
@@ -24,28 +22,20 @@ public class CustomMethodSecurityExpressionRoot
     private HttpServletRequest request;
 
     private UserService userService;
-
-    public CustomMethodSecurityExpressionRoot(
-            final Authentication authentication
-    ) {
+    public CustomMethodSecurityExpressionRoot(final Authentication authentication) {
         super(authentication);
     }
 
     public boolean canAccessUser(final Long id) {
-        Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity user = (JwtEntity) authentication.getPrincipal();
         Long userId = user.getId();
-
         return userId.equals(id) || hasAnyRole(authentication, Role.ROLE_ADMIN);
     }
 
-    private boolean hasAnyRole(final Authentication authentication,
-                               final Role... roles) {
+    private boolean hasAnyRole(final Authentication authentication, final Role... roles) {
         for (Role role : roles) {
-            SimpleGrantedAuthority authority
-                    = new SimpleGrantedAuthority(role.name());
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
             if (authentication.getAuthorities().contains(authority)) {
                 return true;
             }
@@ -54,12 +44,9 @@ public class CustomMethodSecurityExpressionRoot
     }
 
     public boolean canAccessTask(final Long taskId) {
-        Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity user = (JwtEntity) authentication.getPrincipal();
         Long id = user.getId();
-
         return userService.isTaskOwner(id, taskId);
     }
 

@@ -1,11 +1,11 @@
-package com.example.tasklist.web.security;
+package com.example.tasklist.security;
 
-import com.example.tasklist.domain.exception.AccessDeniedException;
-import com.example.tasklist.domain.user.Role;
-import com.example.tasklist.domain.user.User;
+import com.example.tasklist.dto.auth.JwtResponse;
+import com.example.tasklist.model.exception.AccessDeniedException;
+import com.example.tasklist.model.user.Role;
+import com.example.tasklist.model.user.User;
 import com.example.tasklist.service.UserService;
 import com.example.tasklist.service.props.JwtProperties;
-import com.example.tasklist.web.dto.auth.JwtResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -40,15 +40,11 @@ public class JwtTokenProvider {
     public void init() {
         this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
     }
-
-    public String createAccessToken(final Long userId,
-                                    final String username,
-                                    final Set<Role> roles) {
+    public String createAccessToken(final Long userId, final String username, final Set<Role> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("id", userId);
         claims.put("roles", resolveRoles(roles));
-        Instant validity = Instant.now()
-                .plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
+        Instant validity = Instant.now().plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(Date.from(validity))
@@ -65,8 +61,7 @@ public class JwtTokenProvider {
     public String createRefreshToken(final Long userId, final String username) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("id", userId);
-        Instant validity = Instant.now()
-                .plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
+        Instant validity = Instant.now().plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(Date.from(validity))
@@ -83,12 +78,8 @@ public class JwtTokenProvider {
         User user = userService.getById(userId);
         jwtResponse.setId(userId);
         jwtResponse.setUsername(user.getUsername());
-        jwtResponse.setAccessToken(
-                createAccessToken(userId, user.getUsername(), user.getRoles())
-        );
-        jwtResponse.setRefreshToken(
-                createRefreshToken(userId, user.getUsername())
-        );
+        jwtResponse.setAccessToken(createAccessToken(userId, user.getUsername(), user.getRoles()));
+        jwtResponse.setRefreshToken(createRefreshToken(userId, user.getUsername()));
         return jwtResponse;
     }
 
@@ -124,11 +115,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(final String token) {
         String username = getUsername(token);
-        UserDetails userDetails
-                = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails,
-                "",
-                userDetails.getAuthorities());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
 }

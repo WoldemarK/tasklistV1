@@ -1,4 +1,4 @@
-package com.example.tasklist.web.dto.auth;
+package com.example.tasklist.dto.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

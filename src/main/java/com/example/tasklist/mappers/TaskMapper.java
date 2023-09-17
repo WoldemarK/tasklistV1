@@ -1,7 +1,7 @@
-package com.example.tasklist.web.mappers;
+package com.example.tasklist.mappers;
 
-import com.example.tasklist.domain.task.Task;
-import com.example.tasklist.web.dto.task.TaskDto;
+import com.example.tasklist.dto.task.TaskDto;
+import com.example.tasklist.model.task.Task;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -45,7 +45,3 @@ To run this application you need to create `.env` file in root directory with ne
 - `MINIO_ACCESS_KEY` - access key of MinIO
 - `MINIO_SECRET_KEY` - secret key of MinIO
 
-## Guide
-
-You can find step-by-step creating of this
-project [here](https://www.youtube.com/playlist?list=PL3Ur78l82EFD8OKSulH3NaK1As4G7YWMJ).

@@ -1,15 +1,15 @@
-package com.example.tasklist.web.controller;
+package com.example.tasklist.controller;
 
-import com.example.tasklist.domain.task.Task;
-import com.example.tasklist.domain.user.User;
+import com.example.tasklist.dto.task.TaskDto;
+import com.example.tasklist.dto.user.UserDto;
+import com.example.tasklist.dto.validation.OnCreate;
+import com.example.tasklist.dto.validation.OnUpdate;
+import com.example.tasklist.mappers.TaskMapper;
+import com.example.tasklist.mappers.UserMapper;
+import com.example.tasklist.model.task.Task;
+import com.example.tasklist.model.user.User;
 import com.example.tasklist.service.TaskService;
 import com.example.tasklist.service.UserService;
-import com.example.tasklist.web.dto.task.TaskDto;
-import com.example.tasklist.web.dto.user.UserDto;
-import com.example.tasklist.web.dto.validation.OnCreate;
-import com.example.tasklist.web.dto.validation.OnUpdate;
-import com.example.tasklist.web.mappers.TaskMapper;
-import com.example.tasklist.web.mappers.UserMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-@RestController
-@RequestMapping("/api/v1/users")
-@RequiredArgsConstructor
 @Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/users")
 @Tag(name = "User Controller", description = "User API")
 public class UserController {
 
@@ -74,8 +73,7 @@ public class UserController {
     @QueryMapping(name = "tasksByUserId")
     @Operation(summary = "Get all User tasks")
     @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
-    public List<TaskDto> getTasksByUserId(@PathVariable
-                                          @Argument final Long id) {
+    public List<TaskDto> getTasksByUserId(@PathVariable @Argument final Long id) {
         List<Task> tasks = taskService.getAllByUserId(id);
         return taskMapper.toDto(tasks);
     }

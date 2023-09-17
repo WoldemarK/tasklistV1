@@ -1,13 +1,13 @@
-package com.example.tasklist.web.controller;
+package com.example.tasklist.controller;
 
-import com.example.tasklist.domain.task.Task;
-import com.example.tasklist.domain.task.TaskImage;
+import com.example.tasklist.dto.task.TaskDto;
+import com.example.tasklist.dto.task.TaskImageDto;
+import com.example.tasklist.dto.validation.OnUpdate;
+import com.example.tasklist.mappers.TaskImageMapper;
+import com.example.tasklist.mappers.TaskMapper;
+import com.example.tasklist.model.task.Task;
+import com.example.tasklist.model.task.TaskImage;
 import com.example.tasklist.service.TaskService;
-import com.example.tasklist.web.dto.task.TaskDto;
-import com.example.tasklist.web.dto.task.TaskImageDto;
-import com.example.tasklist.web.dto.validation.OnUpdate;
-import com.example.tasklist.web.mappers.TaskImageMapper;
-import com.example.tasklist.web.mappers.TaskMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +25,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping("/api/v1/tasks")
-@RequiredArgsConstructor
 @Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/tasks")
 @Tag(name = "Task Controller", description = "Task API")
 public class TaskController {
 
@@ -42,8 +41,7 @@ public class TaskController {
     @MutationMapping(name = "updateTask")
     @Operation(summary = "Update task")
     @PreAuthorize("canAccessTask(#dto.id)")
-    public TaskDto update(@Validated(OnUpdate.class)
-                          @RequestBody @Argument final TaskDto dto) {
+    public TaskDto update(@Validated(OnUpdate.class) @RequestBody @Argument final TaskDto dto) {
         Task task = taskMapper.toEntity(dto);
         Task updatedTask = taskService.update(task);
         return taskMapper.toDto(updatedTask);

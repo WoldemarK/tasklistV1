@@ -1,9 +1,11 @@
 package com.example.tasklist.service.impl;
 
-import com.example.tasklist.domain.exception.ResourceNotFoundException;
-import com.example.tasklist.domain.task.Status;
-import com.example.tasklist.domain.task.Task;
-import com.example.tasklist.domain.task.TaskImage;
+import com.example.tasklist.model.exception.ResourceNotFoundException;
+import com.example.tasklist.model.task.Status;
+import com.example.tasklist.model.task.Task;
+import com.example.tasklist.model.task.TaskImage;
+import com.example.tasklist.model.exception.ResourceNotFoundException;
+import com.example.tasklist.model.task.Task;
 import com.example.tasklist.repository.TaskRepository;
 import com.example.tasklist.service.ImageService;
 import com.example.tasklist.service.TaskService;
@@ -30,8 +32,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional(readOnly = true)
     @Cacheable(value = "TaskService::getById", key = "#id")
     public Task getById(final Long id) {
-        return taskRepository.findById(id)
-                .orElseThrow(() ->
+        return taskRepository.findById(id).orElseThrow(() ->
                         new ResourceNotFoundException("Task not found."));
     }
 
@@ -45,8 +46,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional(readOnly = true)
     public List<Task> getAllSoonTasks(final Duration duration) {
         LocalDateTime now = LocalDateTime.now();
-        return taskRepository.findAllSoonTasks(Timestamp.valueOf(now),
-                Timestamp.valueOf(now.plus(duration)));
+        return taskRepository.findAllSoonTasks(Timestamp.valueOf(now), Timestamp.valueOf(now.plus(duration)));
     }
 
     @Override
@@ -62,9 +62,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    @Cacheable(value = "TaskService::getById",
-            condition = "#task.id!=null",
-            key = "#task.id")
+    @Cacheable(value = "TaskService::getById", condition = "#task.id!=null", key = "#task.id")
     public Task create(final Task task, final Long userId) {
         task.setStatus(Status.TODO);
         taskRepository.save(task);
